@@ -1,5 +1,6 @@
 package com.seewhy.yfunctions.structure;
 
+import com.seewhy.yfunctions.function.standard.Printer;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -19,7 +20,7 @@ public class YListTest {
     };
 
     @Test
-    public void test() {
+    public void testZip() {
         YList<Integer> numbers = YList.list(1, 2, 3, 4, 5);
         YList<String> alphabeth = YList.list("a", "b", "c", "d", "e");
         YList<Tuple<Integer, String>> tuples = YLists.zip(numbers, alphabeth);
@@ -31,8 +32,8 @@ public class YListTest {
     }
 
     @Test
-    public void testMultiFilter() {
-        YList<Integer> numbers = YList.list(1, 2, 3, 4, 5, 6, 7, 8, 9, 10).merge(YList.list(11, 22, 33, 44, 55, 66, 77));
+    public void testFilterWithVarArg() {
+        YList<Integer> numbers = YList.list(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
         numbers
                 .filter(
                         new Predicate<Integer>() {
@@ -46,12 +47,18 @@ public class YListTest {
                             }
                         }
                 )
+                .print();
+    }
+
+    @Test
+    public void testMap() {
+        YList.list(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
                 .map(new Binad<Integer, String>() {
                     public String f(Integer integer) {
                         return Integer.toBinaryString(integer);
                     }
                 })
-                .print();
+                .foreach(new Printer());
     }
 
     void nl() {

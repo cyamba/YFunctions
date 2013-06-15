@@ -131,6 +131,7 @@ public class YList<S> {
         return rawList;
     }
 
+    //TODO fix
     public YList<S> merge(YList<S> xs) {
         List<S> mutableTmpList = souldBeImmutableList;
         mutableTmpList.addAll(souldBeImmutableList);
