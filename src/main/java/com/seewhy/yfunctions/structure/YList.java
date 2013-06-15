@@ -15,7 +15,7 @@ public class YList<S> {
 
     private final List<S> rawList;
 
-    private YList(List<S> xs) {
+    public YList(List<S> xs) {
         rawList = xs;
     }
 
