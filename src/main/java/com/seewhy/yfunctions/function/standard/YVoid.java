@@ -1,4 +1,6 @@
-package com.seewhy.yfunctions.structure;
+package com.seewhy.yfunctions.function.standard;
+
+import com.seewhy.yfunctions.structure.Nil;
 
 /**
  * @author: cbyamba

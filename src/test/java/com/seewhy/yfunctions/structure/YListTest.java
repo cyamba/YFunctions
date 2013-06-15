@@ -1,6 +1,9 @@
 package com.seewhy.yfunctions.structure;
 
+import com.seewhy.yfunctions.function.standard.Binad;
+import com.seewhy.yfunctions.function.standard.Predicate;
 import com.seewhy.yfunctions.function.standard.Printer;
+import com.seewhy.yfunctions.function.standard.YVoid;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -58,7 +61,7 @@ public class YListTest {
                         return Integer.toBinaryString(integer);
                     }
                 })
-                .foreach(new Printer());
+                .foreach(new Printer<String>());
     }
 
     void nl() {
@@ -68,5 +71,6 @@ public class YListTest {
     void print(String s) {
         System.out.println(s);
     }
+
 }
 

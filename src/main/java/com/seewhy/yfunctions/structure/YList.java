@@ -1,6 +1,6 @@
 package com.seewhy.yfunctions.structure;
 
-import com.seewhy.yfunctions.function.standard.Printer;
+import com.seewhy.yfunctions.function.standard.*;
 
 import java.util.*;
 
@@ -13,23 +13,23 @@ import java.util.*;
  */
 public class YList<S> {
 
-    private final List<S> souldBeImmutableList;
+    private final List<S> rawList;
 
     private YList(List<S> xs) {
-        souldBeImmutableList = xs;
+        rawList = xs;
     }
 
     private YList() {
-        souldBeImmutableList = new ArrayList<S>();
+        rawList = new ArrayList<S>();
     }
 
-    private List<S> newRawList() {
+    private List<S> rawList() {
         return new ArrayList<S>();
     }
 
     //TODO real deep copy mini framework
 
-    private List<S> newRawList(List<S> xs) {
+    private List<S> rawList(List<S> xs) {
         List<S> newRawList = new ArrayList<S>();
         for (S s : xs) {
             newRawList.add(s);
@@ -41,11 +41,11 @@ public class YList<S> {
         return Arrays.asList(xs);
     }
 
-    public static <S> YList list(List<S> xs) {
+    public static <S> YList<S> list(List<S> xs) {
         return new YList(xs);
     }
 
-    public static <S> YList list(S... xs) {
+    public static <S> YList<S> list(S... xs) {
         return new YList(Arrays.asList(xs));
     }
 
@@ -54,19 +54,19 @@ public class YList<S> {
     }
 
     public List<S> getRawList() {
-        return souldBeImmutableList;
+        return rawList;
     }
 
     public YList<S> foreach(YVoid<S> function) {
-        for (S s : souldBeImmutableList) {
+        for (S s : rawList) {
             function.f(s);
         }
         return this;
     }
 
     public YList<S> filter(Predicate<S> predicate) {
-        List<S> mutableTmpList = newRawList();
-        for (S s : souldBeImmutableList) {
+        List<S> mutableTmpList = rawList();
+        for (S s : rawList) {
             if (predicate.f(s)) {
                 mutableTmpList.add(s);
             }
@@ -75,7 +75,7 @@ public class YList<S> {
     }
 
     public YList<S> filter(Predicate<S>... predicates) {
-        YList<S> newAccu = new YList<S>(souldBeImmutableList);
+        YList<S> newAccu = new YList<S>(rawList);
         for (Predicate<S> p : predicates) {
             newAccu = filter0(p, newAccu);
         }
@@ -93,8 +93,8 @@ public class YList<S> {
     }
 
     public YList<S> map(Monad<S> monad) {
-        List<S> mutableTmpList = newRawList();
-        for (S s : souldBeImmutableList) {
+        List<S> mutableTmpList = rawList();
+        for (S s : rawList) {
             mutableTmpList.add(monad.f(s));
         }
         return new YList(mutableTmpList);
@@ -102,16 +102,14 @@ public class YList<S> {
 
     public <T> YList<T> map(Binad<S, T> binad) {
         List<T> mutableTmpList = new ArrayList<T>();
-        for (S s : souldBeImmutableList) {
+        for (S s : rawList) {
             mutableTmpList.add(binad.f(s));
         }
         return new YList(mutableTmpList);
     }
 
     public YList<S> copy() {
-        List<S> mutableTmpList = newRawList();
-        mutableTmpList.addAll(souldBeImmutableList);
-        return new YList(souldBeImmutableList);
+        return new YList(copyRawList());
     }
 
     public YList<S> reduce() {
@@ -122,35 +120,34 @@ public class YList<S> {
         return this;
     }
 
-    //TODO deep copy framework
+    //TODO deep copy framework -  temporary solution internal copyRawList and copy functions .. review...
     List<S> copyRawList() {
-        List<S> rawList = new ArrayList<S>();
-        for (S s : souldBeImmutableList) {
-            rawList.add(s);
-        }
-        return rawList;
+        return Arrays.asList(Arrays.copyOf(array(), rawList.size()));
+    }
+
+    List<S> copyRawList(List<S> xs) {
+        return Arrays.asList(Arrays.copyOf((S[]) xs.toArray(), xs.size()));
     }
 
     //TODO fix
     public YList<S> merge(YList<S> xs) {
-        List<S> mutableTmpList = souldBeImmutableList;
-        mutableTmpList.addAll(souldBeImmutableList);
-        mutableTmpList.addAll((List<S>) xs.getRawList());
-        return list(xs);
+        List<S> mutableTmpList = copyRawList();
+        mutableTmpList.addAll(xs.copy().copyRawList());
+        return list(mutableTmpList);
     }
 
     public YList<S> merge(List<S> xs) {
-        List<S> mutableTmpList = souldBeImmutableList;
-        mutableTmpList.addAll(souldBeImmutableList);
-        mutableTmpList.addAll(xs);
-        return list(xs);
+        List<S> mutableTmpList = copyRawList(rawList);
+        mutableTmpList.addAll(copyRawList(xs));
+        return list(mutableTmpList);
     }
 
-    public YList<S> merge(S... xs) {
-        List<S> mutableTmpList = souldBeImmutableList;
-        mutableTmpList.addAll(souldBeImmutableList);
-        mutableTmpList.addAll(Arrays.asList(xs));
-        return list(xs);
+    public YList<S> merge(List<S>... xxs) {
+        List<S> mutableTmpList = copyRawList();
+        for (List<S> xs : xxs) {
+            mutableTmpList.addAll(copyRawList(xs));
+        }
+        return list(mutableTmpList);
     }
 
     public YList<S> cycle(YList<S> xs) {
@@ -158,17 +155,17 @@ public class YList<S> {
     }
 
     public YList<S> reverse(YList<S> xs) {
-        List<S> mutableTmpList = xs.getRawList();
+        List<S> mutableTmpList = copyRawList(xs.getRawList());
         Collections.reverse(mutableTmpList);
         return list(mutableTmpList);
     }
 
     public S get(int i) {
-        return souldBeImmutableList.get(i);
+        return rawList.get(i);
     }
 
     public YList<S> take(int count, YList<S> xs) {
-        List<S> mutableTmpList = newRawList();
+        List<S> mutableTmpList = rawList();
         int i = 0;
         while (i < xs.getRawList().size() && i < count) {
             mutableTmpList.add(xs.get(i));
@@ -178,7 +175,7 @@ public class YList<S> {
     }
 
     public YList drop(int count, YList<S> xs) {
-        List<S> mutableTmpList = newRawList();
+        List<S> mutableTmpList = rawList();
         int i = 0;
         while (i < xs.getRawList().size() && i < count) {
             i++;
@@ -191,15 +188,15 @@ public class YList<S> {
     }
 
     public <T extends Comparable> S max() {
-        if (souldBeImmutableList.isEmpty()) {
+        if (rawList.isEmpty()) {
             return null;
         }
-        S obj = souldBeImmutableList.get(0);
+        S obj = rawList.get(0);
         if (!(obj instanceof Comparable)) {
             return null;
         }
         List<T> mutableTmpList = new ArrayList<T>();
-        for (S s : souldBeImmutableList) {
+        for (S s : rawList) {
             mutableTmpList.add((T) s);
         }
         T max = (T) Collections.max(mutableTmpList);
@@ -207,7 +204,7 @@ public class YList<S> {
     }
 
     public S max(Comparator<S> comparator) {
-        return Collections.max(souldBeImmutableList, comparator);
+        return Collections.max(rawList, comparator);
     }
 
     public S min() {
@@ -215,18 +212,18 @@ public class YList<S> {
     }
 
     public S min(Comparator<S> comparator) {
-        return Collections.min(souldBeImmutableList, comparator);
+        return Collections.min(rawList, comparator);
     }
 
     public Number sum() {
-        if (souldBeImmutableList.isEmpty()) {
+        if (rawList.isEmpty()) {
             return 0;
         }
-        if (!(souldBeImmutableList.get(0) instanceof Number)) {
+        if (!(rawList.get(0) instanceof Number)) {
             return 0;
         }
         int sum = 0;
-        for (S s : souldBeImmutableList) {
+        for (S s : rawList) {
             sum += ((Number) s).intValue();
         }
         return sum;
@@ -237,22 +234,22 @@ public class YList<S> {
     }
 
     public boolean isEmpty() {
-        return souldBeImmutableList.isEmpty();
+        return rawList.isEmpty();
     }
 
     public int length() {
-        return souldBeImmutableList.size();
+        return rawList.size();
     }
 
     //TODO do this immutable
     public YList<S> add(S obj) {
-        List<S> newRawList = souldBeImmutableList;
+        List<S> newRawList = rawList;
         newRawList.add(obj);
         return this;
     }
 
     public S[] toArray() {
-        return souldBeImmutableList.toArray((S[]) new Object[]{});
+        return rawList.toArray((S[]) new Object[]{});
     }
 
     public YList<S> zip(YList<S> fstList, YList<S> sndList) {
@@ -268,7 +265,7 @@ public class YList<S> {
     }
 
     public S[] array() {
-        return souldBeImmutableList.toArray((S[]) new Object[]{});
+        return rawList.toArray((S[]) new Object[]{});
     }
 
     public YList<S> print() {
