@@ -1,4 +1,4 @@
 YFunctions
 ==========
 
-A simple framework supporting a functional programming style inspired by haskell and scala
+A simple java framework supporting a functional programming style inspired by haskell and scala
