@@ -129,11 +129,17 @@ public class YList<S> {
         return Arrays.asList(Arrays.copyOf((S[]) xs.toArray(), xs.size()));
     }
 
-    //TODO fix
     public YList<S> merge(YList<S> xs) {
-        List<S> mutableTmpList = copyRawList();
-        mutableTmpList.addAll(xs.copy().copyRawList());
+        List<S> mutableTmpList = addAll(new ArrayList<S>(), rawList);
+        mutableTmpList = addAll(mutableTmpList, xs.copy().copyRawList());
         return list(mutableTmpList);
+    }
+
+    List<S> addAll(List<S> firstList, List<S> otherList) {
+        for (S s : otherList) {
+            firstList.add(s);
+        }
+        return firstList;
     }
 
     public YList<S> merge(List<S> xs) {

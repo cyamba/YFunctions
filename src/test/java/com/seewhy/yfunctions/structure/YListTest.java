@@ -23,6 +23,11 @@ public class YListTest {
     };
 
     @Test
+    public void testMerge() {
+        YList.list(1, 2, 3, 4, 5).merge(YList.list(11, 22, 33, 44, 55)).foreach(new Printer<Integer>());
+    }
+
+    @Test
     public void testZip() {
         YList<Integer> numbers = YList.list(1, 2, 3, 4, 5);
         YList<String> alphabeth = YList.list("a", "b", "c", "d", "e");
