@@ -23,11 +23,53 @@ public class YListTest {
     };
 
     @Test
+    public void testFilterVarArgs() {
+        YList.list(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19)
+                .filter(
+                        new Predicate<Integer>() {
+                            public boolean f(Integer integer) {
+                                return integer % 2 != 0;
+                            }
+                        }
+                )
+                .foreach(new Printer<Integer>());
+    }
+
+    @Test
+    public void testFilter() {
+        Predicate<Integer> odd = new Predicate<Integer>() {
+            public boolean f(Integer integer) {
+                return integer % 2 != 0;
+            }
+        };
+
+        Predicate<Integer> incongruentWith3 = new Predicate<Integer>() {
+            public boolean f(Integer integer) {
+                return integer % 3 != 0;
+            }
+        };
+
+        YList.list(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20)
+                .filter(odd, incongruentWith3)
+                .print();
+    }
+
+    @Test
     public void testMerge() {
         YList.list(1, 2, 3, 4, 5).merge(YList.list(11, 22, 33, 44, 55)).foreach(new Printer<Integer>());
     }
 
     @Test
+    public void testMergeVarArgs() {
+        YList.list(1, 2, 3, 4, 5).merge(11, 22, 33, 44, 55, 66, 77).foreach(new Printer<Integer>());
+    }
+
+    @Test
+    public void testMergeListVarArgs() {
+        YList.list(1, 2, 3, 4, 5).merge(Arrays.asList(7, 8, 9), Arrays.asList(10, 11, 12), Arrays.asList(13, 14, 15))
+                .foreach(new Printer<Integer>());
+    }
+
     public void testZip() {
         YList<Integer> numbers = YList.list(1, 2, 3, 4, 5);
         YList<String> alphabeth = YList.list("a", "b", "c", "d", "e");

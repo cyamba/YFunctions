@@ -23,23 +23,11 @@ public class YList<S> {
         rawList = new ArrayList<S>();
     }
 
-    private List<S> rawList() {
+    private List<S> newRawList() {
         return new ArrayList<S>();
     }
 
     //TODO real deep copy mini framework
-
-    private List<S> rawList(List<S> xs) {
-        List<S> newRawList = new ArrayList<S>();
-        for (S s : xs) {
-            newRawList.add(s);
-        }
-        return newRawList;
-    }
-
-    private List<S> rawList(S... xs) {
-        return Arrays.asList(xs);
-    }
 
     public static <S> YList<S> list(List<S> xs) {
         return new YList(xs);
@@ -65,7 +53,7 @@ public class YList<S> {
     }
 
     public YList<S> filter(Predicate<S> predicate) {
-        List<S> mutableTmpList = rawList();
+        List<S> mutableTmpList = newRawList();
         for (S s : rawList) {
             if (predicate.f(s)) {
                 mutableTmpList.add(s);
@@ -93,7 +81,7 @@ public class YList<S> {
     }
 
     public YList<S> map(Monad<S> monad) {
-        List<S> mutableTmpList = rawList();
+        List<S> mutableTmpList = newRawList();
         for (S s : rawList) {
             mutableTmpList.add(monad.f(s));
         }
@@ -143,15 +131,27 @@ public class YList<S> {
     }
 
     public YList<S> merge(List<S> xs) {
-        List<S> mutableTmpList = copyRawList(rawList);
-        mutableTmpList.addAll(copyRawList(xs));
+        List<S> mutableTmpList = addAll(new ArrayList<S>(), rawList);
+        mutableTmpList = addAll(mutableTmpList, copyRawList(xs));
+        return list(mutableTmpList);
+    }
+
+    public YList<S> merge(S... xs) {
+        return merge(Arrays.asList(xs));
+    }
+
+    public YList<S> merge(YList<S>... xxs) {
+        List<S> mutableTmpList = addAll(new ArrayList<S>(), rawList);
+        for (YList<S> xs : xxs) {
+            mutableTmpList = addAll(mutableTmpList, copyRawList(xs.getRawList()));
+        }
         return list(mutableTmpList);
     }
 
     public YList<S> merge(List<S>... xxs) {
-        List<S> mutableTmpList = copyRawList();
+        List<S> mutableTmpList = addAll(new ArrayList<S>(), rawList);
         for (List<S> xs : xxs) {
-            mutableTmpList.addAll(copyRawList(xs));
+            mutableTmpList = addAll(mutableTmpList, copyRawList(xs));
         }
         return list(mutableTmpList);
     }
@@ -171,7 +171,7 @@ public class YList<S> {
     }
 
     public YList<S> take(int count, YList<S> xs) {
-        List<S> mutableTmpList = rawList();
+        List<S> mutableTmpList = newRawList();
         int i = 0;
         while (i < xs.getRawList().size() && i < count) {
             mutableTmpList.add(xs.get(i));
@@ -181,7 +181,7 @@ public class YList<S> {
     }
 
     public YList drop(int count, YList<S> xs) {
-        List<S> mutableTmpList = rawList();
+        List<S> mutableTmpList = newRawList();
         int i = 0;
         while (i < xs.getRawList().size() && i < count) {
             i++;
