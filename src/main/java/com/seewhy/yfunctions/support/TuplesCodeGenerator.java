@@ -34,29 +34,37 @@ public class TuplesCodeGenerator {
 
     public static String zip(int length) {
         StringBuilder builder = new StringBuilder();
-        builder.append(TB).append("public static ");
-        builder.append(generics(length));
-        builder.append(" zip(YList<T0> list0");
+        builder.append(TB).append("public static ").append(generics(length));
+        builder.append(" YList<Tuple").append(length);
+        builder.append(generics(length)).append(">");
+        ;
+        builder.append(" zip(Tuple").append(length).append("<").append("YList<T0>");
         for (int i = 1; i < length; i++) {
-            builder.append(", YList<").append("T").append(i).append("> list").append(i);
+            builder.append(", YList<").append("T").append(i).append(">");
         }
+        builder.append("> tupleOfYList");
         builder.append(") {").append(NL);
-        builder.append(TB(2)).append("List<Tuple").append(generics(length));
-        builder.append("> tuples = ArrayList<Tuple").append(generics(length));
-        builder.append(">").append("();").append(NL);
+        builder.append(TB(2)).append("YList<T0> list0 = tupleOfYList._0();").append(NL);
+        for (int i = 1; i < length; i++) {
+            builder.append(TB(2)).append("YList<T").append(i).append("> list").append(i)
+                    .append(" = tupleOfYList._").append(i).append("();").append(NL);
+        }
+        builder.append(TB(2)).append("List<Tuple").append(length).append(generics(length)).append("> listOfYTuples")
+                .append(" = ").append("new ArrayList<").append("Tuple").append(length)
+                .append(generics(length)).append(">").append("();").append(NL);
         builder.append(TB(2)).append("int length = minimum(list0.length()");
         for (int i = 1; i < length; i++) {
             builder.append(", list").append(i).append(".length()");
         }
         builder.append(");").append(NL);
         builder.append(TB(2)).append("for (int i = 0; i < length; i++) {").append(NL);
-        builder.append(TB(3)).append("tuples.add(new Tuple").append(length).append(generics(length)).append("(list0.get(i)");
-        for (int i = 0; i < length; i++) {
+        builder.append(TB(3)).append("listOfYTuples.add(new Tuple").append(length).append(generics(length)).append("(list0.get(i)");
+        for (int i = 1; i < length; i++) {
             builder.append(", list").append(i).append(".get(i)");
         }
         builder.append(");").append(NL);
         builder.append(TB(2)).append("}").append(NL);
-        builder.append(TB(2)).append("return new YList<Tuple").append(length).append(generics(length)).append(">(tuples);").append(NL);
+        builder.append(TB(2)).append("return new YList<Tuple").append(length).append(generics(length)).append(">(listOfYTuples);").append(NL);
         builder.append(TB).append("}");
         return builder.toString();
     }
