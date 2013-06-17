@@ -1,5 +1,7 @@
 package com.seewhy.yfunctions.structure;
 
+import static java.util.Arrays.*;
+
 /**
  * @author cbyamba
  *         Date: 2013-06-15
@@ -49,6 +51,13 @@ public class Tuple3<T0, T1, T2> {
         result = 31 * result + (_1 != null ? _1.hashCode() : 0);
         result = 31 * result + (_2 != null ? _2.hashCode() : 0);
         return result;
+    }
+
+
+    //TODO generate toString
+    @Override
+    public String toString() {
+        return deepToString(asList(_0, _1, _2).toArray());
     }
 }
 

@@ -5,7 +5,7 @@ package com.seewhy.yfunctions.support;
  *         Date: 2013-06-15
  *         Time: 20:44
  */
-public class StructureGenerator {
+public class TupleNCodeGenerator {
 
     public static final String NL = "\n";
     public static final String TB = "\t";

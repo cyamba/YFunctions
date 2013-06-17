@@ -64,4 +64,38 @@ public class Tuple9<T0, T1, T2, T3, T4, T5, T6, T7, T8> {
     public T8 _8() {
         return _8;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Tuple9 tuple9 = (Tuple9) o;
+
+        if (_0 != null ? !_0.equals(tuple9._0) : tuple9._0 != null) return false;
+        if (_1 != null ? !_1.equals(tuple9._1) : tuple9._1 != null) return false;
+        if (_2 != null ? !_2.equals(tuple9._2) : tuple9._2 != null) return false;
+        if (_3 != null ? !_3.equals(tuple9._3) : tuple9._3 != null) return false;
+        if (_4 != null ? !_4.equals(tuple9._4) : tuple9._4 != null) return false;
+        if (_5 != null ? !_5.equals(tuple9._5) : tuple9._5 != null) return false;
+        if (_6 != null ? !_6.equals(tuple9._6) : tuple9._6 != null) return false;
+        if (_7 != null ? !_7.equals(tuple9._7) : tuple9._7 != null) return false;
+        if (_8 != null ? !_8.equals(tuple9._8) : tuple9._8 != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = _0 != null ? _0.hashCode() : 0;
+        result = 31 * result + (_1 != null ? _1.hashCode() : 0);
+        result = 31 * result + (_2 != null ? _2.hashCode() : 0);
+        result = 31 * result + (_3 != null ? _3.hashCode() : 0);
+        result = 31 * result + (_4 != null ? _4.hashCode() : 0);
+        result = 31 * result + (_5 != null ? _5.hashCode() : 0);
+        result = 31 * result + (_6 != null ? _6.hashCode() : 0);
+        result = 31 * result + (_7 != null ? _7.hashCode() : 0);
+        result = 31 * result + (_8 != null ? _8.hashCode() : 0);
+        return result;
+    }
 }

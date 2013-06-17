@@ -46,5 +46,33 @@ public class Tuple6<T0, T1, T2, T3, T4, T5> {
     public T5 _5() {
         return _5;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Tuple6 tuple6 = (Tuple6) o;
+
+        if (_0 != null ? !_0.equals(tuple6._0) : tuple6._0 != null) return false;
+        if (_1 != null ? !_1.equals(tuple6._1) : tuple6._1 != null) return false;
+        if (_2 != null ? !_2.equals(tuple6._2) : tuple6._2 != null) return false;
+        if (_3 != null ? !_3.equals(tuple6._3) : tuple6._3 != null) return false;
+        if (_4 != null ? !_4.equals(tuple6._4) : tuple6._4 != null) return false;
+        if (_5 != null ? !_5.equals(tuple6._5) : tuple6._5 != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = _0 != null ? _0.hashCode() : 0;
+        result = 31 * result + (_1 != null ? _1.hashCode() : 0);
+        result = 31 * result + (_2 != null ? _2.hashCode() : 0);
+        result = 31 * result + (_3 != null ? _3.hashCode() : 0);
+        result = 31 * result + (_4 != null ? _4.hashCode() : 0);
+        result = 31 * result + (_5 != null ? _5.hashCode() : 0);
+        return result;
+    }
 }
 

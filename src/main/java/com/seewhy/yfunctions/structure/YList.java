@@ -104,7 +104,8 @@ public class YList<S> {
         return this;
     }
 
-    public YList<S> fold() {
+    public YList<S> fold(Monad<S> monad) {
+
         return this;
     }
 
@@ -170,24 +171,24 @@ public class YList<S> {
         return rawList.get(i);
     }
 
-    public YList<S> take(int count, YList<S> xs) {
+    public YList<S> take(int count) {
         List<S> mutableTmpList = newRawList();
         int i = 0;
-        while (i < xs.getRawList().size() && i < count) {
-            mutableTmpList.add(xs.get(i));
+        while (i < this.getRawList().size() && i < count) {
+            mutableTmpList.add(this.get(i));
             i++;
         }
         return list(mutableTmpList);
     }
 
-    public YList drop(int count, YList<S> xs) {
+    public YList drop(int count) {
         List<S> mutableTmpList = newRawList();
         int i = 0;
-        while (i < xs.getRawList().size() && i < count) {
+        while (i < this.getRawList().size() && i < count) {
             i++;
         }
-        while (i < xs.getRawList().size()) {
-            mutableTmpList.add(xs.get(i));
+        while (i < this.getRawList().size()) {
+            mutableTmpList.add(this.get(i));
             i++;
         }
         return list(mutableTmpList);

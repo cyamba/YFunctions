@@ -21,6 +21,7 @@ public class Tuple4<T0, T1, T2, T3> {
 
     public T0 _0() {
         return _0;
+
     }
 
     public T1 _1() {
@@ -33,5 +34,30 @@ public class Tuple4<T0, T1, T2, T3> {
 
     public T3 _3() {
         return _3;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Tuple4 tuple4 = (Tuple4) o;
+
+        if (_0 != null ? !_0.equals(tuple4._0) : tuple4._0 != null) return false;
+        if (_1 != null ? !_1.equals(tuple4._1) : tuple4._1 != null) return false;
+        if (_2 != null ? !_2.equals(tuple4._2) : tuple4._2 != null) return false;
+        if (_3 != null ? !_3.equals(tuple4._3) : tuple4._3 != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = _0 != null ? _0.hashCode() : 0;
+        result = 31 * result + (_1 != null ? _1.hashCode() : 0);
+        result = 31 * result + (_2 != null ? _2.hashCode() : 0);
+        result = 31 * result + (_3 != null ? _3.hashCode() : 0);
+        return result;
     }
 }
