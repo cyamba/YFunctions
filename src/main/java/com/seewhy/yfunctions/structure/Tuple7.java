@@ -1,5 +1,7 @@
 package com.seewhy.yfunctions.structure;
 
+import static java.util.Arrays.asList;
+
 /**
  * @author cbyamba
  *         Date: 2013-06-15
@@ -81,5 +83,10 @@ public class Tuple7<T0, T1, T2, T3, T4, T5, T6> {
         result = 31 * result + (_5 != null ? _5.hashCode() : 0);
         result = 31 * result + (_6 != null ? _6.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return asList(_0, _1, _2, _3, _4, _5, _6).toString();
     }
 }
