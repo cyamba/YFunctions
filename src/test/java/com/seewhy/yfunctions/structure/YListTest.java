@@ -9,7 +9,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-import java.util.Arrays;
+import static java.util.Arrays.*;
+
 
 /**
  * @author cbyamba
@@ -69,7 +70,7 @@ public class YListTest {
 
     @Test
     public void testMergeListVarArgs() {
-        YList.list(1, 2, 3, 4, 5).merge(Arrays.asList(7, 8, 9), Arrays.asList(10, 11, 12), Arrays.asList(13, 14, 15))
+        YList.list(1, 2, 3, 4, 5).merge(asList(7, 8, 9), asList(10, 11, 12), asList(13, 14, 15))
                 .foreach(new Printer<Integer>());
     }
 
@@ -77,7 +78,7 @@ public class YListTest {
         YList<Integer> numbers = YList.list(1, 2, 3, 4, 5);
         YList<String> alphabeth = YList.list("a", "b", "c", "d", "e");
         YList<Tuple<Integer, String>> tuples = YLists.zip(numbers, alphabeth);
-        print(tuples.length() + " " + Arrays.deepToString(tuples.toArray()));
+        print(tuples.length() + " " + deepToString(tuples.toArray()));
         nl();
         tuples.foreach(printer);
         nl();
