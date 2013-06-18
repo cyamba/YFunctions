@@ -1,10 +1,13 @@
 package com.seewhy.yfunctions.structure;
 
-import com.seewhy.yfunctions.function.standard.Binad;
-import com.seewhy.yfunctions.function.standard.Predicate;
+import com.seewhy.yfunctions.function.BinadTwoArgs;
+import com.seewhy.yfunctions.function.Binad;
+import com.seewhy.yfunctions.function.Predicate;
 import com.seewhy.yfunctions.function.standard.Printer;
-import com.seewhy.yfunctions.function.standard.YVoid;
+import com.seewhy.yfunctions.function.YVoid;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 import java.util.Arrays;
 
@@ -110,6 +113,25 @@ public class YListTest {
                 })
                 .foreach(new Printer<String>());
     }
+
+    @Test
+    public void testFold() {
+        Integer result = (Integer) YList.list(1, 2, 3, 4, 5, 6, 7, 8, 9, 10).fold(0,
+                new BinadTwoArgs<Integer, Integer>() {
+                    public Integer f(Integer accumulation, Integer currentValue) {
+                        return accumulation + currentValue;
+                    }
+                }
+        );
+        assertEquals(Integer.valueOf(55), result);
+        print(result.toString());
+        print(YLists.list(1, 7).fold("", new BinadTwoArgs<Integer, String>() {
+            public String f(String accumulation, Integer currentValue) {
+                return accumulation + "." + Integer.toBinaryString(currentValue);
+            }
+        }));
+    }
+
 
     void nl() {
         System.out.println();

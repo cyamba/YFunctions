@@ -1,4 +1,4 @@
-package com.seewhy.yfunctions.function.standard;
+package com.seewhy.yfunctions.function;
 
 /**
  * @author cbyamba

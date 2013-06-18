@@ -1,5 +1,6 @@
 package com.seewhy.yfunctions.function.standard;
 
+import com.seewhy.yfunctions.function.YVoid;
 import com.seewhy.yfunctions.structure.Nil;
 
 /**

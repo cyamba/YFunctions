@@ -9,6 +9,21 @@ import java.util.List;
  *         Time: 19:56
  */
 public class YLists {
+
+    public static YList<Integer> list(Integer start, Integer end) {
+        List<Integer> tmp = new ArrayList<Integer>();
+        if (start > end) {
+            for (int i = start; i >= end; i--) {
+                tmp.add(i);
+            }
+            return new YList<Integer>(tmp);
+        }
+        for (int i = start; i <= end; i++) {
+            tmp.add(i);
+        }
+        return new YList<Integer>(tmp);
+    }
+
     public static <S> YList<S> cycle(YList<S> block, int count) {
         List<S> result = YList.list().getRawList();
         List<S> blockRawList = block.getRawList();

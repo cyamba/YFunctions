@@ -1,5 +1,6 @@
 package com.seewhy.yfunctions.structure;
 
+import com.seewhy.yfunctions.function.*;
 import com.seewhy.yfunctions.function.standard.*;
 
 import java.util.*;
@@ -104,9 +105,8 @@ public class YList<S> {
         return this;
     }
 
-    public YList<S> fold(Monad<S> monad) {
-
-        return this;
+    public <T> T fold(T initialValue, BinadTwoArgs<S, T> function) {
+        return Accumulators.fold(this, function, initialValue);
     }
 
     //TODO deep copy framework -  temporary solution internal copyRawList and copy functions .. review...
