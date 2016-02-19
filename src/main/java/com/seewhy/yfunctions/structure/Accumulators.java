@@ -1,6 +1,6 @@
 package com.seewhy.yfunctions.structure;
 
-import com.seewhy.yfunctions.function.BinadTwoArgs;
+import com.seewhy.yfunctions.function.BinaryFunction;
 
 /**
  * @author cbyamba
@@ -9,10 +9,10 @@ import com.seewhy.yfunctions.function.BinadTwoArgs;
  */
 public class Accumulators {
 
-    public static <S, T> T fold(YList<S> list, BinadTwoArgs<S, T> function, T initialValue) {
-        AccumulatorParent<S, T> accumulator = new AccumulatorParent(function, initialValue);
-        for (S s : list.getRawList()) {
-            accumulator.accumulate(accumulator.getValue(), s);
+    public static <T, U> U fold(YList<T> list, BinaryFunction<T, U, U> function, U initialValue) {
+        AccumulatorParent<T, U> accumulator = new AccumulatorParent(function, initialValue);
+        for (T t : list.getRawList()) {
+            accumulator.accumulate(accumulator.getValue(), t);
         }
         return accumulator.getValue();
     }

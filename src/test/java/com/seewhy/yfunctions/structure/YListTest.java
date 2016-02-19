@@ -1,7 +1,7 @@
 package com.seewhy.yfunctions.structure;
 
-import com.seewhy.yfunctions.function.BinadTwoArgs;
-import com.seewhy.yfunctions.function.Binad;
+import com.seewhy.yfunctions.function.BinaryFunction;
+import com.seewhy.yfunctions.function.Converter;
 import com.seewhy.yfunctions.function.Predicate;
 import com.seewhy.yfunctions.function.standard.Printer;
 import com.seewhy.yfunctions.function.YVoid;
@@ -20,7 +20,7 @@ import static java.util.Arrays.*;
 public class YListTest {
 
     YVoid<Tuple<Integer, String>> printer = new YVoid<Tuple<Integer, String>>() {
-        public Nil f(Tuple<Integer, String> tuple) {
+        public Nil apply(Tuple<Integer, String> tuple) {
             System.out.print(tuple.toString() + " ");
             return new Nil();
         }
@@ -31,7 +31,7 @@ public class YListTest {
         YList.list(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19)
                 .filter(
                         new Predicate<Integer>() {
-                            public boolean f(Integer integer) {
+                            public boolean apply(Integer integer) {
                                 return integer % 2 != 0;
                             }
                         }
@@ -42,13 +42,13 @@ public class YListTest {
     @Test
     public void testFilter() {
         Predicate<Integer> odd = new Predicate<Integer>() {
-            public boolean f(Integer integer) {
+            public boolean apply(Integer integer) {
                 return integer % 2 != 0;
             }
         };
 
         Predicate<Integer> incongruentWith3 = new Predicate<Integer>() {
-            public boolean f(Integer integer) {
+            public boolean apply(Integer integer) {
                 return integer % 3 != 0;
             }
         };
@@ -91,12 +91,12 @@ public class YListTest {
         numbers
                 .filter(
                         new Predicate<Integer>() {
-                            public boolean f(Integer integer) {
+                            public boolean apply(Integer integer) {
                                 return integer % 2 != 0;
                             }
                         },
                         new Predicate<Integer>() {
-                            public boolean f(Integer integer) {
+                            public boolean apply(Integer integer) {
                                 return integer % 3 != 0;
                             }
                         }
@@ -106,30 +106,33 @@ public class YListTest {
 
     @Test
     public void testMap() {
+        Converter<Integer,String> converter = new Converter<Integer, String>() {
+            @Override
+            public String apply(Integer integer) {
+                    return Integer.toBinaryString(integer);
+            }
+        };
         YList.list(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
-                .map(new Binad<Integer, String>() {
-                    public String f(Integer integer) {
-                        return Integer.toBinaryString(integer);
-                    }
-                })
+                .map(converter)
                 .foreach(new Printer<String>());
     }
 
     @Test
     public void testFold() {
-        Integer result = (Integer) YList.list(1, 2, 3, 4, 5, 6, 7, 8, 9, 10).fold(0,
-                new BinadTwoArgs<Integer, Integer>() {
-                    public Integer f(Integer accumulation, Integer currentValue) {
-                        return accumulation + currentValue;
-                    }
-                }
+        BinaryFunction<Integer, Integer, Integer> binaryFunction = new BinaryFunction<Integer, Integer, Integer>() {
+            public Integer apply(Integer accumulation, Integer currentValue) {
+                return accumulation + currentValue;
+            }
+        };
+        Integer result = YList.list(1, 2, 3, 4, 5, 6, 7, 8, 9, 10).fold(0,
+                binaryFunction
         );
         assertEquals(Integer.valueOf(55), result);
         print(result.toString());
-        print(YLists.list(1, 7).fold("", new BinadTwoArgs<Integer, String>() {
-            public String f(String accumulation, Integer currentValue) {
-                return accumulation + "." + Integer.toBinaryString(currentValue);
-            }
+        print(YLists.list(1, 7).fold("", new BinaryFunction<Integer,String, String>() {
+            @Override
+            public String apply(Integer integer, String accumulation) {
+                return accumulation + "." + Integer.toBinaryString(integer);            }
         }));
     }
 

@@ -54,7 +54,6 @@ public class Tuple3<T0, T1, T2> {
     }
 
 
-    //TODO generate toString
     @Override
     public String toString() {
         return asList(_0, _1, _2).toString();
