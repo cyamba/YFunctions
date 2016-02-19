@@ -7,25 +7,24 @@ package com.seewhy.yfunctions.structure;
  */
 public class Tuple<S, T> {
 
-    private S first;
-    private T second;
+    public final S _0;
+    public final T _1;
 
-    public Tuple(S first, T second) {
-        this.first = first;
-        this.second = second;
+    private Tuple(S _0, T _1) {
+        this._0 = _0;
+        this._1 = _1;
     }
 
-    public S getFirst() {
-        return first;
+    public static <S,T> Tuple<S,T> of(S _0,T _1){
+        return Tuple.of(_0, _1);
     }
 
-    public T getSecond() {
-        return second;
+    public S get_0() {
+        return _0;
     }
 
-    @Override
-    public String toString() {
-        return new StringBuilder().append("(").append(first).append(",").append(second).append(")").toString();
+    public T get_1() {
+        return _1;
     }
 
     @Override
@@ -35,16 +34,21 @@ public class Tuple<S, T> {
 
         Tuple tuple = (Tuple) o;
 
-        if (first != null ? !first.equals(tuple.first) : tuple.first != null) return false;
-        if (second != null ? !second.equals(tuple.second) : tuple.second != null) return false;
+        if (_0 != null ? !_0.equals(tuple._0) : tuple._0 != null) return false;
+        if (_1 != null ? !_1.equals(tuple._1) : tuple._1 != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = first != null ? first.hashCode() : 0;
-        result = 31 * result + (second != null ? second.hashCode() : 0);
+        int result = _0 != null ? _0.hashCode() : 0;
+        result = 31 * result + (_1 != null ? _1.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return new StringBuilder().append("(").append(_0).append(",").append(_1).append(")").toString();
     }
 }

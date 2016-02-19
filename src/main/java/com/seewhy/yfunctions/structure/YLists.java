@@ -11,17 +11,17 @@ import java.util.List;
 public class YLists {
 
     public static YList<Integer> list(Integer start, Integer end) {
-        List<Integer> tmp = new ArrayList<Integer>();
+        List<Integer> tmp = new ArrayList<>();
         if (start > end) {
             for (int i = start; i >= end; i--) {
                 tmp.add(i);
             }
-            return new YList<Integer>(tmp);
+            return new YList(tmp);
         }
         for (int i = start; i <= end; i++) {
             tmp.add(i);
         }
-        return new YList<Integer>(tmp);
+        return new YList(tmp);
     }
 
     public static <S> YList<S> cycle(YList<S> block, int count) {
@@ -37,30 +37,30 @@ public class YLists {
         if (firstList.isEmpty() || sndList.isEmpty()) {
             return (YList<Tuple<S, T>>) YList.list();
         }
-        return (YList<Tuple<S, T>>) zip0(firstList, sndList);
+        return zip0(firstList, sndList);
     }
 
     static <S, T> YList<Tuple<S, T>> zip0(YList<S> firstList, YList<T> sndList) {
         List<Tuple<S, T>> mutableTmpList = new ArrayList<Tuple<S, T>>();
         int minLength = Math.min(firstList.length(), sndList.length());
         for (int i = 0; i < minLength; i++) {
-            mutableTmpList.add((Tuple<S, T>) zip1(firstList.get(i), sndList.get(i)));
+            mutableTmpList.add(zip1(firstList.get(i), sndList.get(i)));
         }
-        return (YList<Tuple<S, T>>) YList.list(mutableTmpList);
+        return YList.list(mutableTmpList);
     }
 
     static <S, T> Tuple<S, T> zip1(S first, T second) {
-        return new Tuple<S, T>(first, second);
+        return Tuple.of(first, second);
     }
 
     public static <S, T> Tuple<YList<S>, YList<T>> split(YList<Tuple<S, T>> tupleList) {
-        List<S> fstList = new ArrayList<S>();
-        List<T> sndList = new ArrayList<T>();
+        List<S> fstList = new ArrayList<>();
+        List<T> sndList = new ArrayList<>();
         for (Tuple<S, T> tuple : tupleList.getRawList()) {
-            fstList.add(tuple.getFirst());
-            sndList.add(tuple.getSecond());
+            fstList.add(tuple._0);
+            sndList.add(tuple._1);
         }
-        return new Tuple<YList<S>, YList<T>>((YList<S>) YList.list(fstList), (YList<T>) YList.list(sndList));
+        return Tuple.of(YList.list(fstList), YList.list(sndList));
     }
 
 }

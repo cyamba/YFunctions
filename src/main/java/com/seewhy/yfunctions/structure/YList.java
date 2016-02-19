@@ -9,7 +9,7 @@ import java.util.*;
  * @author: chryam
  * Date: 2013-06-05
  * Time: 09:01
- * <p/>
+ * <p>
  * TODO verify control of immutabilty
  */
 public class YList<S> {
@@ -48,7 +48,7 @@ public class YList<S> {
 
     public YList<S> foreach(YVoid<S> function) {
         for (S s : rawList) {
-            function.f(s);
+            function.apply(s);
         }
         return this;
     }
@@ -56,7 +56,7 @@ public class YList<S> {
     public YList<S> filter(Predicate<S> predicate) {
         List<S> mutableTmpList = newRawList();
         for (S s : rawList) {
-            if (predicate.f(s)) {
+            if (predicate.apply(s)) {
                 mutableTmpList.add(s);
             }
         }
@@ -74,25 +74,25 @@ public class YList<S> {
     YList<S> filter0(Predicate<S> predicate, YList<S> fromAccu) {
         List<S> toAccu = new ArrayList<S>();
         for (S s : fromAccu.getRawList()) {
-            if (predicate.f(s)) {
+            if (predicate.apply(s)) {
                 toAccu.add(s);
             }
         }
         return new YList(toAccu);
     }
 
-    public YList<S> map(Monad<S> monad) {
+    public YList<S> map(Function<S> function) {
         List<S> mutableTmpList = newRawList();
         for (S s : rawList) {
-            mutableTmpList.add(monad.f(s));
+            mutableTmpList.add(function.apply(s));
         }
         return new YList(mutableTmpList);
     }
 
-    public <T> YList<T> map(Binad<S, T> binad) {
+    public <T> YList<T> map(Converter<S, T> converter) {
         List<T> mutableTmpList = new ArrayList<T>();
         for (S s : rawList) {
-            mutableTmpList.add(binad.f(s));
+            mutableTmpList.add(converter.apply(s));
         }
         return new YList(mutableTmpList);
     }
@@ -105,7 +105,7 @@ public class YList<S> {
         return this;
     }
 
-    public <T> T fold(T initialValue, BinadTwoArgs<S, T> function) {
+    public <T> T fold(T initialValue, BinaryFunction<S, T, T> function) {
         return Accumulators.fold(this, function, initialValue);
     }
 
@@ -268,7 +268,7 @@ public class YList<S> {
     }
 
     public <T> Tuple<YList<S>, YList<T>> split() {
-        return (Tuple<YList<S>, YList<T>>) YLists.split((YList<Tuple<S, T>>) this);
+        return YLists.split((YList<Tuple<S, T>>) this);
     }
 
     public S[] array() {

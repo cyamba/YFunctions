@@ -7,5 +7,5 @@ package com.seewhy.yfunctions.function;
  */
 public interface BinaryFunction<T, U, V> {
 
-    V f(T t, U u);
+    V apply(T t, U u);
 }

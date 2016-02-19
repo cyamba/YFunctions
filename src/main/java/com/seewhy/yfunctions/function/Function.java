@@ -6,5 +6,5 @@ package com.seewhy.yfunctions.function;
  *         Time: 20:01
  */
 public interface Function<S> {
-    S f(S s);
+    S apply(S s);
 }

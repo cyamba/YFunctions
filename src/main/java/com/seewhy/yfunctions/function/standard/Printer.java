@@ -9,7 +9,7 @@ import com.seewhy.yfunctions.structure.Nil;
  *         Time: 20:10
  */
 public class Printer<T> implements YVoid<T> {
-    public Nil f(T s) {
+    public Nil apply(T s) {
         System.out.print(s + " ");
         return new Nil();
     }

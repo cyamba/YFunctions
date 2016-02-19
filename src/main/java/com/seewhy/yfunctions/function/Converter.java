@@ -6,5 +6,5 @@ package com.seewhy.yfunctions.function;
  *         Time: 20:02
  */
 public interface Converter<S, T> {
-    T f(S s);
+    T apply(S s);
 }
