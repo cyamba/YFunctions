@@ -275,6 +275,23 @@ public class YList<S> {
         return rawList.toArray((S[]) new Object[]{});
     }
 
+    public YList<S> tail() {
+        if (length() > 1) {
+            return new YList<>(rawList.subList(1, rawList.size()));
+        }
+        if (length() == 1) {
+            return new YList<>(new ArrayList<S>());
+        }
+        throw new IllegalStateException("Empty yList has no tail!");
+    }
+
+    public S head() {
+        if (length() > 0) {
+            return get(0);
+        }
+        throw new IllegalStateException("Empty yList has no head!");
+    }
+
     public YList<S> print() {
         return this.foreach((YVoid<S>) new Printer());
     }

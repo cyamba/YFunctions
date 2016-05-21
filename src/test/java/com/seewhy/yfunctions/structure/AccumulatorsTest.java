@@ -21,11 +21,23 @@ public class AccumulatorsTest {
             }
         };
 
+        BinaryFunction<Integer, String, String> binaryFunction2 = new BinaryFunction<Integer, String, String>() {
+            public String apply(Integer integer, String accumulated) {
+                return integer + "::" + accumulated;
+            }
+        };
+
         //When
         Double folded = Accumulators.fold(integers, binaryFunction, 0d);
 
         //Then
-        assertEquals("",Double.valueOf(2.5928571428571425d),folded);
+        assertEquals("", Double.valueOf(2.5928571428571425d), folded);
+
+
+        System.out.println(Accumulators.fold(integers, binaryFunction2, ""));
+
+        System.out.println(Accumulators.fold2(integers, binaryFunction2, ""));
+
     }
 
 }

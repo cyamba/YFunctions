@@ -16,4 +16,12 @@ public class Accumulators {
         }
         return accumulator.getValue();
     }
+
+    public static <T, U> U fold2(YList<T> list, BinaryFunction<T, U, U> function, U accumulatedValue) {
+        if (list.isEmpty()) {
+            return accumulatedValue;
+        }
+        accumulatedValue = function.apply(list.head(), accumulatedValue);
+        return fold2(list.tail(), function, accumulatedValue);
+    }
 }
